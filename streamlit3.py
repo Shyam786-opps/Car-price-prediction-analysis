@@ -15,7 +15,7 @@ st.write("This application allows you to explore car pricing data and predict pr
 @st.cache
 def load_data():
     # Replace 'car_data.csv' with the actual file path of your dataset
-    df = pd.read_csv('car_data.csv')
+    df = pd.read_csv('car data.csv')
     return df
 
 data = load_data()

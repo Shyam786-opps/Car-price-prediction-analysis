@@ -4,6 +4,7 @@ import numpy as np
 from sklearn.model_selection import train_test_split
 from sklearn.linear_model import LinearRegression
 from sklearn.metrics import mean_absolute_error, mean_squared_error, r2_score
+from sklearn.preprocessing import LabelEncoder
 import matplotlib.pyplot as plt
 import seaborn as sns
 
@@ -31,6 +32,14 @@ st.write(f"Number of rows: {data.shape[0]}")
 st.write(f"Number of columns: {data.shape[1]}")
 st.write(data.describe())
 
+# Check for Missing Values
+st.subheader("Missing Values")
+missing_values = data.isnull().sum()
+st.write(missing_values)
+
+# Handling Missing Values (if any)
+data = data.dropna()  # Drop rows with missing values. You can also choose to fill missing values instead.
+
 # Exploratory Data Analysis (EDA)
 st.subheader("Exploratory Data Analysis")
 numeric_cols = data.select_dtypes(include=np.number).columns.tolist()
@@ -53,6 +62,17 @@ st.pyplot(fig)
 
 # Data Preprocessing for Model
 st.subheader("Model Training")
+
+# Encoding categorical variables
+label_encoders = {}
+categorical_cols = ['Fuel_Type', 'Seller_Type', 'Transmission']
+
+for col in categorical_cols:
+    le = LabelEncoder()
+    data[col] = le.fit_transform(data[col])
+    label_encoders[col] = le
+
+# Target and Features
 target = st.selectbox("Select Target Variable", numeric_cols)
 features = st.multiselect("Select Feature Variables", [col for col in numeric_cols if col != target])
 
